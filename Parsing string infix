@@ -1,1 +1,51 @@
+//WinaFadhilah
+//parsing string infix
 
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    string eval; getline(cin,eval);
+    vector<char> data;
+    long unsigned int a;
+  
+    for(a=0; a<eval.length(); a++){
+        if(eval[a] == ' ')
+            continue;
+        else if(isdigit(eval[a])){ 
+            while(a<eval.length() && isdigit(eval[a])){
+                data.push_back(eval[a]);
+                a++;
+            }
+            a--;
+        }
+        else if(eval[a] == '-'){
+            data.push_back(eval[a]);
+            if(a==0){
+                if(isdigit(eval[a+1])){
+                    a++;
+                    while(a<eval.length() && isdigit(eval[a])){
+                        data.push_back(eval[a]);
+                        a++;
+                    }
+                    a--;
+                 }else{
+                    data.push_back('1');
+                    data.push_back(' ');
+                    data.push_back('*');
+                }
+            } else {
+                if(!isdigit(eval[a-1]) && eval[a+1] != ' '){
+                    data.push_back('1');
+                    data.push_back(' ');
+                    data.push_back('*');
+                } 
+            }
+        }else
+            data.push_back(eval[a]);
+        data.push_back(' ');
+    }
+    for(auto j:data)
+        cout<<j;
+    return 0;
+}
