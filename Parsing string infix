@@ -4,48 +4,104 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
+bool operand(char i){
+int asci = (int)i;
+if (asci >= 48 && asci <= 57){
+    return true;
+} else {return false;}
+
+}
+
+bool is_operator(char i){
+int asci = (int)i;
+if (!(asci >= 48 && asci <= 57)){
+    return true;
+} else {return false;}
+
+}
+
+
+
 int main(){
-    string eval; getline(cin,eval);
-    vector<char> data;
-    long unsigned int a;
-  
-    for(a=0; a<eval.length(); a++){
-        if(eval[a] == ' ')
-            continue;
-        else if(isdigit(eval[a])){ 
-            while(a<eval.length() && isdigit(eval[a])){
-                data.push_back(eval[a]);
-                a++;
-            }
-            a--;
-        }
-        else if(eval[a] == '-'){
-            data.push_back(eval[a]);
-            if(a==0){
-                if(isdigit(eval[a+1])){
-                    a++;
-                    while(a<eval.length() && isdigit(eval[a])){
-                        data.push_back(eval[a]);
-                        a++;
-                    }
-                    a--;
-                 }else{
-                    data.push_back('1');
-                    data.push_back(' ');
-                    data.push_back('*');
-                }
-            } else {
-                if(!isdigit(eval[a-1]) && eval[a+1] != ' '){
-                    data.push_back('1');
-                    data.push_back(' ');
-                    data.push_back('*');
-                } 
-            }
-        }else
-            data.push_back(eval[a]);
-        data.push_back(' ');
+string infix2,save[100],infix;
+int hasil = 0,panjang;
+getline(cin,infix2);
+
+panjang = infix2.length();
+for(int i = 0; i<panjang;i++){
+    if (infix2[i] != ' '){
+        infix += infix2[i];
     }
-    for(auto j:data)
-        cout<<j;
-    return 0;
+}
+
+panjang = infix.length();
+for (int i = 0;i<panjang;i++){
+
+if (operand(infix[i])){
+    if (operand(infix[i])&&operand(infix[i+1])){
+        save[hasil] = infix[i];
+        save[hasil] += infix[i+1];
+        hasil++;
+        i++;
+    } else if (operand(infix[i])&& !(operand(infix[i+1]))){
+        save[hasil] = infix[i];
+        hasil++;
+    }
+}
+
+if (is_operator(infix[i])){
+    if(is_operator(infix[i]) && infix[i+1] == '-' && infix[i+2] == '('){
+        save[hasil+1] = infix[i+1];
+        save[hasil+2] = '*';
+        save[hasil] = infix[i];
+        save[hasil+1] += "1";
+        hasil+=3;
+        i++;
+    }else if (is_operator(infix[i])&& infix[i+1] == '-' && operand(infix[i+2])&&infix[i]!= ')'){
+        save[hasil+1] = infix[i+1];
+        save[hasil] = infix[i];
+        save[hasil+1]+= "1";
+        save[hasil+2] = '*';
+        hasil+=3;
+        i++;
+
+    }else if (infix[i] == '-' &&infix[i+1]=='(' && i == 0){
+        save[hasil] = infix[i];
+        save[hasil] += '1';
+        save[hasil+1] = '*';
+        hasil+=2;
+
+    }else if (infix[i]=='-'&& operand(infix[i+1])&& !operand(infix[i+2]) && i == 0){
+        save[hasil] = infix[i];
+        save[hasil] += infix[i+1];
+        hasil+=2;
+        i++;
+
+    }else if (infix[i]=='-'&& operand(infix[i+1])&& operand(infix[i+2]) && i == 0){
+        save[hasil] = infix[i];
+        save[hasil] += infix[i+1];
+        save[hasil] += infix[i+2];
+        hasil+=3;
+        i+=2;
+
+    }else if (is_operator(infix[i])){
+        save[hasil] = infix[i];
+        hasil++;
+
+    }
+}
+
+}
+
+
+for (int i = 0;i<=hasil;i++){
+    if(i == 0){
+        cout << "Print : ";
+    }
+    if(save[i].length()>=1){
+        cout << save[i] << " ";
+    }
+}
+
 }
