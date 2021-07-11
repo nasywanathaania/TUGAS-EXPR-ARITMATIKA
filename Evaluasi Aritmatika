@@ -3,14 +3,14 @@ using namespace std;
 
 long unsigned int i;
 
-bool isOp(char c){
-    if(c=='+'||c=='-'||c=='*'||c=='/'||c=='%')
+bool isOp(char k){
+    if(k=='+'||k=='-'||k=='*'||k=='/'||k=='%')
         return true;
     return false;
 }
-int precedence(char c){
-    if(c=='+'||c=='-') return 1;
-    if(c=='*'||c=='/'||c=='%') return 2;
+int precedence(char k){
+    if(k=='+'||k=='-') return 1;
+    if(k=='*'||k=='/'||k=='%') return 2;
     return 0;
 }
 double applyOp(double num1, double num2, char op){
